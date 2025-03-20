@@ -4,7 +4,6 @@ import { SymbolProvider } from '../context/symbolcontext';
 
 const Home = ({ navigation }) => {
 
-
     return(
         <View>
             <View>

@@ -52,8 +52,6 @@ const Game = ({ route }) => {
         resetStates();
     }, []);
 
-
-
     function handleTurns(id) {
         if (gridStates[id] !== "") 
             return;
