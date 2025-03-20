@@ -1,10 +1,9 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ButtonProps, Button } from 'react-native';
 import { useState, useEffect } from "react";
-import { Link, useRouter} from 'expo-router';
 import { SymbolProvider } from '../context/symbolcontext';
 
 const Home = ({ navigation }) => {
-    const router = useRouter();
+
 
     return(
         <View>
