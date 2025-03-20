@@ -23,12 +23,14 @@ const Game = ({ route }) => {
 
     /*Ai's turn: Selects a random position from the unused slots*/
     async function handleAiTurn(){
-        setTimeout(() => {
-            const availableSlots = currentSlots();
-            const randomIndex = Math.floor(Math.random() * availableSlots.length);
-            const selectedPosition = availableSlots[randomIndex];
-            handleTurns(selectedPosition);
-        }, 500);
+        if(!gameEnd){
+            setTimeout(() => {
+                const availableSlots = currentSlots();
+                const randomIndex = Math.floor(Math.random() * availableSlots.length);
+                const selectedPosition = availableSlots[randomIndex];
+                handleTurns(selectedPosition);
+            }, 500);
+        }
     }
 
     const currentSlots = () => {
@@ -43,8 +45,11 @@ const Game = ({ route }) => {
 
     useEffect(() => {
         checkWinStates();
-        if(aiOn && !xTurn){
+        if(aiOn && !xTurn && !gameEnd){
             handleAiTurn();
+        }
+        else if(gameEnd){
+            resetStates();
         }
     }, [gridStates]);
 
@@ -65,8 +70,8 @@ const Game = ({ route }) => {
     }
 
     function resetStates() {
-        setGameEnd(false);
         setXTurn(true);
+        setGameEnd(false);
         const updatedGridStates = [...gridStates];
         updatedGridStates.fill("");
         setGridStates(updatedGridStates);
@@ -95,16 +100,13 @@ const Game = ({ route }) => {
                     alert("O Wins!");
                     setOWins(oWins + 1);
                 }
-                resetStates();
                 return;
             }
         }
 
         if (gridStates.every(element => element !== "") && !gameEnd){
-            setGameEnd(true);
             alert("Tied Game!");
             setGameTies(gameTies + 1);
-            resetStates();
         }
     }
 
