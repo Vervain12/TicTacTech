@@ -8,14 +8,24 @@ export default function Profile() {
 
     return (
         <View>
-            <TouchableOpacity
-                onPress={() => pickXSymbol()}>
-                    <Text>Choose X</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => pickOSymbol()}>
-                    <Text>Choose O</Text>
-            </TouchableOpacity>
+            <View>
+                <View>
+                    <TouchableOpacity
+                        onPress={() => pickXSymbol()}>
+                            <Text>Choose X</Text>
+                    </TouchableOpacity>    
+                </View>
+                <View>
+                    <TouchableOpacity
+                        onPress={() => pickOSymbol()}>
+                            <Text>Choose O</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create ({
+
+});

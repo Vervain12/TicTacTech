@@ -14,14 +14,20 @@ export default function GameSelect({ navigation }) {
 
     return(
         <View>
-            <TouchableOpacity
-                onPress={handleSingle}>
-                    <Text>Single Player</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                onPress={handleTwo}>
-                    <Text>Two Player</Text>
-            </TouchableOpacity>
+            <View>
+                <View>
+                    <TouchableOpacity
+                        onPress={handleSingle}>
+                            <Text>Single Player</Text>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity
+                        onPress={handleTwo}>
+                            <Text>Two Player</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
     );
 }
