@@ -5,11 +5,11 @@ import { useUserAuth } from '../context/authcontext';
 const SignIn = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [signUpVisible, setSignUpVisible] = useState(false);
+    const [signUpToggle, setSignUpToggle] = useState(false);
     const { user, setUser, signUp, signIn } = useUserAuth();
 
     const handleSignUpVisibility = () => {
-        setSignUpVisible(!signUpVisible);
+        setSignUpToggle(!signUpToggle);
     }
    
     const handleSignUp = async (event) => {
@@ -20,7 +20,7 @@ const SignIn = ({navigation}) => {
         }
         const newUser = await signUp(email, password);
         if (newUser) {
-            alert('Account created successfully');
+            alert("Account Created");
             setUser(loggedInUser);
             navigation.navigate('Home');
         }
@@ -35,9 +35,15 @@ const SignIn = ({navigation}) => {
         }
     }
 
+    useEffect(() => {
+        if(user && navigation.getState().routes[navigation.getState().index].name !== 'Sign In / Sign Up'){
+            navigation.navigate('Home');        
+        }
+    },[user])
+
     return (
         <View>
-            {signUpVisible ?
+            {signUpToggle ?
             <View>
                 <TextInput
                     style={styles.input}
