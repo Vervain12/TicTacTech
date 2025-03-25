@@ -37,6 +37,7 @@ const SignIn = ({navigation}) => {
 
     useEffect(() => {
         if(user && navigation.getState().routes[navigation.getState().index].name !== 'Sign In / Sign Up'){
+            alert("User signed in.")
             navigation.navigate('Home');        
         }
     },[user])
