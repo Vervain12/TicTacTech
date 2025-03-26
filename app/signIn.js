@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useState, useEffect } from "react";
 import { useUserAuth } from '../context/authcontext';
+import { addUser } from '../services/game-score-services';
 
 const SignIn = ({navigation}) => {
     const [email, setEmail] = useState("");
@@ -20,8 +21,9 @@ const SignIn = ({navigation}) => {
         }
         const newUser = await signUp(email, password);
         if (newUser) {
-            alert("Account Created");
-            setUser(loggedInUser);
+            //alert("Account Created" + newUser.uid);
+            setUser(newUser);
+            addUser(newUser.uid);
             navigation.navigate('Home');
         }
     }
@@ -37,7 +39,6 @@ const SignIn = ({navigation}) => {
 
     useEffect(() => {
         if(user && navigation.getState().routes[navigation.getState().index].name !== 'Sign In / Sign Up'){
-            alert("User signed in.")
             navigation.navigate('Home');        
         }
     },[user])

@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import { useState, useEffect } from "react";
 import { useSymbolPicker } from '../context/symbolcontext';
+import { addScore } from '../services/game-score-services';
+import { useUserAuth } from '../context/authcontext';
 
 const Game = ({ route }) => {
+
+    const { user } = useUserAuth();
 
     /*Retrieving the aiOn param, converting from string to bool*/
     const { aiOn } = route.params;
@@ -15,11 +19,6 @@ const Game = ({ route }) => {
     const [gridStates, setGridStates] = useState(Array(9).fill(""));
     const grid = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const [gameEnd, setGameEnd] = useState(false);
-
-    /*setXWins, setOWins, and setGameTies could be implemented with context?*/
-    const [xWins, setXWins] = useState(0);
-    const [oWins, setOWins] = useState(0);
-    const [gameTies, setGameTies] = useState(0);
 
     /*Ai's turn: Selects a random position from the unused slots*/
     async function handleAiTurn(){
@@ -94,11 +93,11 @@ const Game = ({ route }) => {
                 /*Unsure how to get images within alerts*/
                 if (gridStates[x] == xSymbol && !gameEnd){
                     alert("X Wins!");
-                    setXWins(xWins + 1);
+                    addScore(user.uid, "XScore");
                 }
                 else if (gridStates[x] == oSymbol && !gameEnd){
                     alert("O Wins!");
-                    setOWins(oWins + 1);
+                    addScore(user.uid, "OScore");
                 }
                 return;
             }
@@ -106,7 +105,7 @@ const Game = ({ route }) => {
 
         if (gridStates.every(element => element !== "") && !gameEnd){
             alert("Tied Game!");
-            setGameTies(gameTies + 1);
+            addScore(user.uid, "Ties");
         }
     }
 
