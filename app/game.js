@@ -47,8 +47,8 @@ const Game = ({ route }) => {
         if(aiOn && !xTurn && !gameEnd){
             handleAiTurn();
         }
-        else if(gameEnd){
-            resetStates();
+        if(gameEnd){
+            setTimeout(resetStates(), 1000);
         }
     }, [gridStates]);
 
@@ -89,15 +89,18 @@ const Game = ({ route }) => {
                 gridStates[x] === gridStates[y] &&
                 gridStates[y] === gridStates[z]
             ) {
-                setGameEnd(true);
-                /*Unsure how to get images within alerts*/
-                if (gridStates[x] == xSymbol && !gameEnd){
-                    alert("X Wins!");
-                    addScore(user.uid, "XScore");
-                }
-                else if (gridStates[x] == oSymbol && !gameEnd){
-                    alert("O Wins!");
-                    addScore(user.uid, "OScore");
+                if (!gameEnd){
+                    setGameEnd(true);
+                    /*Unsure how to get images within alerts*/
+                    if (gridStates[x] == xSymbol && !gameEnd){
+                        alert("X Wins!");
+                        addScore(user.uid, "XScore");
+                    }
+                    else if (gridStates[x] == oSymbol && !gameEnd){
+                        alert("O Wins!");
+                        addScore(user.uid, "OScore");
+                    }
+                    
                 }
                 return;
             }

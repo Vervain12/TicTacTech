@@ -1,7 +1,7 @@
 import { db } from "../firebase/firebaseConfig";
 import { collection, getDocs, addDoc, setDoc, updateDoc, deleteDoc, query, doc, increment } from "firebase/firestore";
 
-export const getScore = async (userId) => {
+export const getScore = async (userId) => { // Non functional, fix this later
     const items = [];
     const docRef = doc(db, "users", userId, "score");
     const snapshot = await getDocs(docRef);
