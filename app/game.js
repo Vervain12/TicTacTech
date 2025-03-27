@@ -110,6 +110,7 @@ const Game = ({ route }) => {
         }
 
         if (gridStates.every(element => element !== "") && !gameEnd){
+            setGameEnd(true);
             alert("Tied Game!");
             addScore(user.uid, "Ties");
         }
