@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Button, Image, TouchableOpacity, TextInput } fr
 import { useState, useEffect } from "react";
 import { useUserAuth } from '../context/authcontext';
 import { addUser } from '../services/game-score-services';
+import { getScore } from '../services/game-score-services';
 
 const SignIn = ({navigation}) => {
     const [email, setEmail] = useState("");

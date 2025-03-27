@@ -1,7 +1,7 @@
 import { db } from "../firebase/firebaseConfig";
 import { collection, getDoc, addDoc, setDoc, updateDoc, deleteDoc, query, doc, increment } from "firebase/firestore";
 
-export const getScore = async (userId) => { // Non functional, fix this later
+export const getScore = async (userId) => {
     const items = [];
     const scoreTypes = ['OScore', 'Ties', 'XScore'];
     for(const scoreType of scoreTypes){
