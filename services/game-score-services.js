@@ -1,14 +1,14 @@
 import { db } from "../firebase/firebaseConfig";
-import { collection, getDocs, addDoc, setDoc, updateDoc, deleteDoc, query, doc, increment } from "firebase/firestore";
+import { collection, getDoc, addDoc, setDoc, updateDoc, deleteDoc, query, doc, increment } from "firebase/firestore";
 
 export const getScore = async (userId) => { // Non functional, fix this later
     const items = [];
-    const docRef = doc(db, "users", userId, "score");
-    const snapshot = await getDocs(docRef);
-
-    snapshot.forEach((doc) => {
-        items.push({id: doc.id, ...doc.data()});
-    });
+    const scoreTypes = ['OScore', 'Ties', 'XScore'];
+    for(const scoreType of scoreTypes){
+        const docRef = doc(db, "users", userId, "score", scoreType);
+        const docSnap = await getDoc(docRef);
+        items.push(docSnap.data());
+    }
     return items;
 };
 
