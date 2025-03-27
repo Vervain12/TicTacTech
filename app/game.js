@@ -47,9 +47,6 @@ const Game = ({ route }) => {
         if(aiOn && !xTurn && !gameEnd){
             handleAiTurn();
         }
-        if(gameEnd){
-            setTimeout(() => resetStates(), 1000);
-        }
     }, [gridStates]);
 
     useEffect(() => {
