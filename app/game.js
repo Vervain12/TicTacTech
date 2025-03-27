@@ -48,9 +48,15 @@ const Game = ({ route }) => {
             handleAiTurn();
         }
         if(gameEnd){
-            setTimeout(resetStates(), 1000);
+            setTimeout(() => resetStates(), 1000);
         }
     }, [gridStates]);
+
+    useEffect(() => {
+        if(gameEnd){
+            setTimeout(() => resetStates(), 500);
+        }
+    }, [gameEnd]);
 
     useEffect(() => {
         resetStates();
