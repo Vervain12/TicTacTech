@@ -15,9 +15,9 @@ const Profile = ({navigation}) =>  {
         const handleGetScores = async () => {
             try {
                 const [oscore, ties, xscore] = await getScore(user.uid);
-                setOScore(oscore.score || 0);
-                setTies(ties.score || 0);
-                setXScore(xscore.score || 0);
+                setOScore(oscore.score);
+                setTies(ties.score);
+                setXScore(xscore.score);
             }
             catch (e){
                 console.error("Error:" + e);
