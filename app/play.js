@@ -7,7 +7,7 @@ export default function GameSelect({ navigation }) {
         navigation.navigate('Game', { aiOn: true });
     }
 
-    /*Two Player*/
+    /*Two Players*/ 
     const handleTwo = () => {
         navigation.navigate('Game', { aiOn: false });
     }
