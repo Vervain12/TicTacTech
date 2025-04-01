@@ -1,133 +1,116 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ButtonProps, Button, Image} from 'react-native';
-import { useState, useEffect, createContext } from "react";
-import { Link, useRouter } from 'expo-router';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useSymbolPicker } from '../context/symbolcontext';
+import { useUserAuth } from '../context/authcontext';
+import { getScore } from '../services/game-score-services';
+import { useEffect, useState } from 'react';
 
-export default function Profile() {
-    const { xSymbol, oSymbol, pickXSymbol, pickOSymbol} = useSymbolPicker();
+const Profile = ({ navigation }) => {
+    const { xSymbol, oSymbol, pickXSymbol, pickOSymbol } = useSymbolPicker();
+    const { user, logout } = useUserAuth();
+    const [oscore, setOScore] = useState(0);
+    const [ties, setTies] = useState(0);
+    const [xscore, setXScore] = useState(0);
+
+    useEffect(() => {
+        const handleGetScores = async () => {
+            try {
+                const [oscore, ties, xscore] = await getScore(user.uid);
+                setOScore(oscore.score);
+                setTies(ties.score);
+                setXScore(xscore.score);
+            } catch (e) {
+                console.error("Error:" + e);
+            }
+        };
+        handleGetScores();
+    }, []);
+
+    const handleSignOut = async () => {
+        alert("Signing out.");
+        logout();
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Sign In / Sign Up' }],
+        });
+    };
 
     return (
-        <View style={styles.screen_layout}>
-            <View style={styles.screen_setup}>
-                <View style={styles.button1_box}>
-                    <View style={styles.button1_vis}>
-                        <TouchableOpacity
-                            onPress={() => pickXSymbol()}>
-                                <Text style={styles.button1_txt}>
-                                    Choose X
-                                </Text>
-                        </TouchableOpacity>    
-                    </View>
-                </View>
-                <View style={styles.button2_box}>
-                    <View style={styles.button2_vis}>
-                        <TouchableOpacity
-                        onPress={() => pickOSymbol()}>
-                                <Text style={styles.button2_txt}>
-                                    Choose O
-                                </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+        <View style={styles.container}>
+            <View style={styles.scoreContainer}>
+                <Text style={styles.scoreText}>X Score: {xscore} </Text>
+                <Text style={styles.scoreText}>O Score: {oscore}</Text>
+                <Text style={styles.scoreText}>Ties: {ties}</Text>
             </View>
+            
+            <View style={styles.symbolContainer}>
+                <TouchableOpacity onPress={pickXSymbol} style={styles.symbolBox}>
+                    <Text style={styles.symbolText}>{xSymbol}</Text>
+                    <Text style={styles.label}>Player 1 (X)</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={pickOSymbol} style={styles.symbolBox}>
+                    <Text style={styles.symbolText}>{oSymbol}</Text>
+                    <Text style={styles.label}>Player 2 (O)</Text>
+                </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity onPress={handleSignOut} style={styles.signOutButton}>
+                <Text style={styles.signOutText}>Sign Out</Text>
+            </TouchableOpacity>
         </View>
     );
-}
+};
 
-const styles = StyleSheet.create ({
-    screen_layout: {
-        position: 'absolute',
-        flexShrink: 0,
-        height: '100%',
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        padding: 20,
+    },
+    scoreContainer: {
+        marginBottom: 20,
+        alignItems: 'center',
+    },
+    scoreText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    symbolContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        rowGap: 0
+        marginBottom: 20,
     },
-
-    screen_setup: {
-        position: 'absolute',
-        flexShrink: 0,
-        height: 932,
-        width: 430,
-        backgroundColor: "rgba(255, 255, 255, 1)",
-        display: 'flex',
-        alignItems: 'flex-start',
-        rowGap: 0
+    symbolBox: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 15,
+        borderWidth: 2,
+        borderColor: '#000',
+        borderRadius: 10,
+        width: 100,
+        height: 100,
     },
-
-    button1_box: {
-        position: 'absolute',
-        flexShrink: 0,
-        top: '21%',
-        height: 50,
-        left: '20%',
-        width: 200,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        rowGap: 0
+    symbolText: {
+        fontSize: 40,
+        fontWeight: 'bold',
     },
-
-    button1_vis: {
-        position: "absolute",
-        flexShrink: 0,
-        top: 2,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        backgroundColor: "rgba(0, 115, 255, 1)",
-        borderRadius: 21
+    label: {
+        marginTop: 5,
+        fontSize: 16,
+        fontWeight: 'bold',
     },
-
-    button1_txt: {
-        flexShrink: 0,
-        top: '7.5%',
-        right: 0,
-        bottom: 0,
-        left: 0,
-        textAlign: 'center',
-        color: 'rgba(255, 255, 255, 1)',
-        fontFamily: 'Inter',
-        fontSize: 30,
-        fontWeight: 400
+    signOutButton: {
+        backgroundColor: 'red',
+        padding: 15,
+        borderRadius: 10,
+        width: '80%',
+        alignItems: 'center',
     },
-
-    button2_box: {
-        position: 'absolute',
-        flexShrink: 0,
-        top: '30%',
-        height: 50,
-        left: '20%',
-        width: 200,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        rowGap: 0
+    signOutText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
     },
-
-    button2_vis: {
-        position: "absolute",
-        flexShrink: 0,
-        top: 2,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        backgroundColor: "rgba(0, 115, 255, 1)",
-        borderRadius: 21
-    },
-
-    button2_txt: {
-        flexShrink: 0,
-        top: '9%',
-        right: 0,
-        bottom: 0,
-        left: 0,
-        textAlign: 'center',
-        color: 'rgba(255, 255, 255, 1)',
-        fontFamily: 'Inter',
-        fontSize: 30,
-        fontWeight: 400
-    }
 });
+
+export default Profile;
