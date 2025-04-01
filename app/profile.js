@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useSymbolPicker } from '../context/symbolcontext';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { SymbolProvider, useSymbolPicker } from '../context/symbolcontext';
 import { useUserAuth } from '../context/authcontext';
 import { getScore } from '../services/game-score-services';
 import { useEffect, useState } from 'react';
@@ -44,11 +44,11 @@ const Profile = ({ navigation }) => {
             
             <View style={styles.symbolContainer}>
                 <TouchableOpacity onPress={pickXSymbol} style={styles.symbolBox}>
-                    <Text style={styles.symbolText}>{xSymbol}</Text>
+                    <Image source={xSymbol} style={styles.symbolImage}/>
                     <Text style={styles.label}>Player 1 (X)</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={pickOSymbol} style={styles.symbolBox}>
-                    <Text style={styles.symbolText}>{oSymbol}</Text>
+                    <Image source={oSymbol} style={styles.symbolImage}/>
                     <Text style={styles.label}>Player 2 (O)</Text>
                 </TouchableOpacity>
             </View>
@@ -89,10 +89,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: 100,
         height: 100,
+        overflow: 'hidden',
     },
-    symbolText: {
-        fontSize: 40,
-        fontWeight: 'bold',
+    symbolImage: {
+        width: 25,
+        height: 25,
+        resizeMode: 'contain'
     },
     label: {
         marginTop: 5,
